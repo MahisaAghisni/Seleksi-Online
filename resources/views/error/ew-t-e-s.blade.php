@@ -1,0 +1,3 @@
+<script>
+    $("input[name=nilai]").change(function(){var e=$(this).val(),a=$(this).data("id");$.ajax({headers:{"X-CSRF-TOKEN":"{{ csrf_token() }}"},type:"post",data:{nilai:e,id:a},async:!0,url:"{{ url('/guru/nilai_essay') }}",success:function(e){console.log(e)}})});var examWizard=$.fn.examWizard({finishOption:{enableModal:!0}});$(".question-response-rows").click(function(){var e=$(this).data("question"),a=".question-"+e;$(".question").addClass("hidden"),$(a).removeClass("hidden"),$("input[name=currentQuestionNumber]").val(e),$("#current-question-number-label").text(e),$("#back-to-prev-question").removeClass("disabled"),$("#go-to-next-question").removeClass("disabled")});
+</script>

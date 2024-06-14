@@ -1,0 +1,27 @@
+.widget-content-area {
+    box-shadow: none !important;
+}
+
+#column-filter .badge {
+    background: transparent;
+}
+#column-filter .badge-primary {
+    color: #d31111;
+    border: 2px dashed #d31111;
+}
+#column-filter .badge-warning {
+    color: #e2a03f;
+    border: 2px dashed #e2a03f;
+}
+#column-filter .badge-danger {
+    color: #e7515a;
+    border: 2px dashed #e7515a;
+}
+.toggle-list a {
+    color: #fff !important;
+    background-color: #d31111 !important;
+    border-color: #d31111;
+    margin-top: 13px;
+    margin-bottom: 13px;
+    margin-right: 5px;
+}
