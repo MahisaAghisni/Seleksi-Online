@@ -18,8 +18,6 @@ class CreateGelombangsTable extends Migration
             $table->bigInteger('tahun');
             $table->date('periode_awal');
             $table->date('periode_akhir');
-            $table->date('tanggal');
-            $table->time('jam');
             $table->date('tgl_seleksi_awal');
             $table->date('tgl_seleksi_akhir');
             $table->string('gelombang');
