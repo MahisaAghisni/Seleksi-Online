@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailSettings;
 use App\Models\Admin;
-use App\Models\Mapel;
 use App\Exports\InstrukturExport;
 use App\Exports\PesertaExport;
 use App\Imports\InstrukturImport;
@@ -24,6 +23,7 @@ use App\Models\Pelatihan;
 use App\Models\Pelatihans;
 use App\Models\Peserta;
 use App\Models\PgPeserta;
+use App\Models\Seleksi;
 use App\Models\Ujian;
 use App\Models\WaktuUjian;
 use Illuminate\Http\Request;
@@ -93,46 +93,6 @@ class AdminController extends Controller
         ]);
     }
 
-    public function filter_list_gelombang(Request $request)
-    {
-        $idGelombang = $request->idGelombang;
-        if (!empty($idGelombang)) {
-            $datas = DetailGelombang::where('idGelombang', $idGelombang)->whereNotNull('idUjian')->distinct('idGelombang')->get();
-            $ujian = Ujian::where('is_active', 1)->get();
-            $ujianIds = $ujian->pluck('id')->toArray();
-
-            $filteredDatas = $datas->filter(function ($data) use ($ujianIds) {
-                return in_array($data->idUjian, $ujianIds);
-            });
-            foreach ($filteredDatas as $detail) {
-                $idGelombang = $detail->idGelombang;
-                $jumlahPeserta = Peserta::where('idGelombang', $idGelombang)->count();
-                $detail->jumlah_peserta = $jumlahPeserta;
-            }
-        } else {
-            $filteredDatas = [];
-        }
-        return view('admin.gelombang.index', [
-            'title' => 'Data Gelombang',
-            'plugin' => '
-                <link rel="stylesheet" type="text/css" href="' . url("/assets/template") . '/plugins/table/datatable/datatables.css">
-                <link rel="stylesheet" type="text/css" href="' . url("/assets/template") . '/plugins/table/datatable/dt-global_style.css">
-                <script src="' . url("/assets/template") . '/plugins/table/datatable/datatables.js"></script>
-                <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
-            ',
-            'menu' => [
-                'menu' => 'gelombang',
-                'expanded' => 'gelombang',
-                'collapse' => '',
-                'sub' => '',
-            ],
-            'admin' => Admin::firstWhere('id', session()->get('id')),
-            'gelombang' => $filteredDatas,
-            'anggaran' => Anggaran::all(),
-            'dataGelombang' => gelombang::all(),
-            'idGelombang' => $idGelombang
-        ]);
-    }
     public function profile()
     {
         return view('admin.profile-settings', [
@@ -545,20 +505,8 @@ class AdminController extends Controller
     #Start Gelombang
     public function gelombang()
     {
-        $datas = DetailGelombang::whereNotNull('idUjian')->distinct('idGelombang')->get();
-        $ujian = Ujian::where('is_active', 1)->get();
+        $datas = DetailGelombang::select('idGelombang')->distinct()->get();
 
-
-        $ujianIds = $ujian->pluck('id')->toArray();
-
-        $filteredDatas = $datas->filter(function ($data) use ($ujianIds) {
-            return in_array($data->idUjian, $ujianIds);
-        });
-        foreach ($filteredDatas as $detail) {
-            $idGelombang = $detail->idGelombang;
-            $jumlahPeserta = Peserta::where('idGelombang', $idGelombang)->count();
-            $detail->jumlah_peserta = $jumlahPeserta;
-        }
         return view('admin.gelombang.index', [
             'title' => 'Data Gelombang',
             'plugin' => '
@@ -574,9 +522,74 @@ class AdminController extends Controller
                 'sub' => '',
             ],
             'admin' => Admin::firstWhere('id', session()->get('id')),
-            'gelombang' => $filteredDatas,
+            'gelombang' => $datas,
             'anggaran' => Anggaran::all(),
             'dataGelombang' => gelombang::all()
+        ]);
+    }
+
+    public function filter_list_gelombang(Request $request)
+    {
+        $idGelombang = $request->idGelombang;
+
+        if (!empty($idGelombang)) {
+            $datas = DetailGelombang::where('idGelombang', $idGelombang)
+                ->get();
+
+
+            foreach ($datas as $detail) {
+                $idGelombang = $detail->idGelombang;
+
+                // Menggunakan relasi Peserta->Pelatihan untuk menghitung jumlah peserta berdasarkan pelatihan
+                $jumlahPeserta =
+                    $jumlahPeserta = Peserta::where('idGelombang', $idGelombang)->whereHas('pelatihans', function ($query) use ($detail) {
+                        $query->where('id', $detail->pelatihans->id);
+                    })->count();
+
+                $detail->jumlah_peserta = $jumlahPeserta;
+
+                $ujianAktif = Ujian::where('pelatihan_id', $detail->pelatihans->id)
+                    ->where('gelombang_id', $idGelombang)
+                    ->where('is_active', 1)
+                    ->first();
+
+                $detail->ujian_aktif = $ujianAktif;
+            }
+        } else {
+            $datas = [];
+        }
+
+        $dataSeleksi = Seleksi::where('idGelombang', $idGelombang)->get();
+        $pluck = $datas->pluck('idPelatihan')->toArray();
+
+        $rawData = [];
+        foreach ($datas as $index => $value) {
+
+            // cari dataSeleksi yang memiliki idPelatihan sama dengan idPelatihan pada $value
+            $dataFound = $dataSeleksi->where('idPelatihan', $value->idPelatihan)->first();
+
+            $value->dataSeleksi = $dataFound;
+        }
+
+        return view('admin.gelombang.index', [
+            'title' => 'Data Gelombang',
+            'plugin' => '
+            <link rel="stylesheet" type="text/css" href="' . url("/assets/template") . '/plugins/table/datatable/datatables.css">
+            <link rel="stylesheet" type="text/css" href="' . url("/assets/template") . '/plugins/table/datatable/dt-global_style.css">
+            <script src="' . url("/assets/template") . '/plugins/table/datatable/datatables.js"></script>
+            <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
+        ',
+            'menu' => [
+                'menu' => 'gelombang',
+                'expanded' => 'gelombang',
+                'collapse' => '',
+                'sub' => '',
+            ],
+            'admin' => Admin::firstWhere('id', session()->get('id')),
+            'gelombang' => $datas,
+            'anggaran' => Anggaran::all(),
+            'dataGelombang' => Gelombang::all(),
+            'idGelombang' => $idGelombang
         ]);
     }
 
@@ -590,18 +603,20 @@ class AdminController extends Controller
 
     public function edit_gelombang(Request $request)
     {
-        DB::table('gelombangs')
-            ->where('id', 71)
-            ->update([
-                'tanggal' => $request->tanggal,
-                'jam' => $request->jam,
-            ]);
+
+        $gelombangDetail = DetailGelombang::firstWhere('id', $request->id);
+        $data = Seleksi::where('idGelombang', $gelombangDetail->idGelombang)->where('idPelatihan', $gelombangDetail->idPelatihan)->get();
+        foreach ($data as $d) {
+            $d->tanggal = $request->tanggal;
+            $d->jam = $request->jam;
+            $d->save();
+        }
 
         return redirect('/admin/gelombang')->with('pesan', "
             <script>
                 swal({
                     title: 'Success!',
-                    text: 'Gelombang updated!',
+                    text: 'Seleksi updated!',
                     type: 'success',
                     padding: '2em'
                 })
@@ -616,19 +631,15 @@ class AdminController extends Controller
         return response()->json($data);
     }
 
-
-
-
-
     #Start Relasi
     public function relasi()
     {
         return view('admin.instruktur.relasi-index', [
             'title' => 'Data Relasi',
             'plugin' => '
-                <link rel="stylesheet" type="text/css" href="' . url("/assets/cbt-malela") . '/plugins/table/datatable/datatables.css">
-                <link rel="stylesheet" type="text/css" href="' . url("/assets/cbt-malela") . '/plugins/table/datatable/dt-global_style.css">
-                <script src="' . url("/assets/cbt-malela") . '/plugins/table/datatable/datatables.js"></script>
+                <link rel="stylesheet" type="text/css" href="' . url("/assets/template") . '/plugins/table/datatable/datatables.css">
+                <link rel="stylesheet" type="text/css" href="' . url("/assets/template") . '/plugins/table/datatable/dt-global_style.css">
+                <script src="' . url("/assets/template") . '/plugins/table/datatable/datatables.js"></script>
                 <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
             ',
             'menu' => [

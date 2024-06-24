@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGelombangDetailsTable extends Migration
+class CreateSeleksiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateGelombangDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('gelombang_details', function (Blueprint $table) {
+        Schema::create('seleksi', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('idGelombang');
             $table->bigInteger('idPelatihan');
+            $table->bigInteger('idUjian');
+            $table->date('tanggal');
+            $table->time('jam');
         });
     }
 
@@ -27,6 +30,6 @@ class CreateGelombangDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gelombang_details');
+        Schema::dropIfExists('seleksi');
     }
 }

@@ -24,5 +24,9 @@ class Pelatihan extends Model
     {
         return $this->hasMany(Ujian::class);
     }
-    
+
+    public function detailGelombang()
+    {
+        return $this->hasManyThrough(DetailGelombang::class, 'id', 'idPelatihan', 'pelatihan', 'id',);
+    }
 }

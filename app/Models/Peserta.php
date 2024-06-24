@@ -32,6 +32,11 @@ class Peserta extends Model
         return $this->hasMany(WaktuUjian::class);
     }
 
+    public function gelombang()
+    {
+        return $this->belongsTo(Gelombang::class, 'idGelombang');
+    }
+
     public function getRouteKeyName()
     {
         return 'ktp';

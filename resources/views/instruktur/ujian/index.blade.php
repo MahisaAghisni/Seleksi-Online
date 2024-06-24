@@ -1,109 +1,118 @@
 @extends('template.main')
 @section('content')
-@include('template.navbar.instruktur')
+    @include('template.navbar.instruktur')
 
-<!--  BEGIN CONTENT AREA  -->
-<div id="content" class="main-content">
-    <div class="layout-px-spacing">
-        <div class="row layout-top-spacing">
-            <div class="col-lg-12 layout-spacing">
-                <div class="widget shadow p-3" style="min-height: 500px;">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="widget-heading">
-                                <h5 class="">Ujian </h5>
-                                @if ($ujianActive >= 1)
-                                <form action="{{ url('/instruktur/edit_ujian/1?is_active=0') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary mt-3 btn-addData">
-                                        Tambah
-                                    </button>
-                                </form>
-                                @else
-                                <a href="{{ url('/instruktur/ujian/create') }}" class="btn btn-primary mt-3">Tambah</a>
-                               @endif
-                            </div>
-                            <div class="table-responsive mt-3" style="overflow-x: scroll;">
-                                <table id="datatable-table" class="table text-center text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>Pelatihan</th>
-                                            <th>Status</th>
-                                            <th>Opsi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($ujian as $u)
-                                        <tr>
-                                            <td>{{ $u->nama }}</td>
-                                            <td>{{ $u->pelatihan->nama_pelatihan }}</td>
-                                            <td>{{ $u->is_active ? 'Aktif' : 'Tidak Aktif' }}</td>
-                                            <td class="d-flex justify-content-center">
-                                                @if ($u->jenis == 0)
-                                                <a href="{{ url('/instruktur/ujian/' . $u->kode) }}" class="btn btn-sm"
-                                                    style="background-color: #5BBCFF;color:white">
-                                                    <span data-feather="eye"></span>
-                                                </a>
-                                                @endif
-                                                @if ($u->is_active)
-                                                <form
-                                                    action="{{ url('/instruktur/edit_ujian/' . $u->id . '?is_active=0') }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-warning btn-sm btn-uncheck">
-                                                        <span data-feather="x"></span>
-                                                    </button>
-                                                </form>
-                                                @else
-                                                @if ($ujianActive >= 1)
-                                                <form action="{{ url('/instruktur/edit_ujian/' . $u->id . '?is_active=1') }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-warning btn-sm btn-activated">
-                                                        <span data-feather="check"></span>
-                                                    </button>
-                                                </form>
-                                                @else
-                                                <form action="{{ url('/instruktur/edit_ujian/' . $u->id . '?is_active=1') }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-warning btn-sm btn-check">
-                                                        <span data-feather="check"></span>
-                                                    </button>
-                                                </form>
-                                                @endif
-                                                @endif
-                                                @if ($u->jenis == 1)
-                                                <a href="{{ url('/instruktur/ujian_essay/' . $u->kode) }}"
-                                                    class="btn btn-info btn-sm" style="background: #5BBCFF">
-                                                    <span data-feather="eye"></span>
-                                                </a>
-                                                @endif
-                                                <form action="{{ url('/instruktur/ujian/' . $u->kode) }}" method="post"
-                                                    class="d-inline" id="formHapus">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm btn-hapus">
-                                                        <span data-feather="trash"></span>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+    <!--  BEGIN CONTENT AREA  -->
+    <div id="content" class="main-content">
+        <div class="layout-px-spacing">
+            <div class="row layout-top-spacing">
+                <div class="col-lg-12 layout-spacing">
+                    <div class="widget shadow p-3" style="min-height: 500px;">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="widget-heading">
+                                    <h5 class="">Ujian </h5>
+                                    @if ($ujianActive >= 1)
+                                        <form action="{{ url('/instruktur/edit_ujian/1?is_active=0') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary mt-3 btn-addData">
+                                                Tambah
+                                            </button>
+                                        </form>
+                                    @else
+                                        <a href="{{ url('/instruktur/ujian/create') }}"
+                                            class="btn btn-primary mt-3">Tambah</a>
+                                    @endif
+                                </div>
+                                <div class="table-responsive mt-3" style="overflow-x: scroll;">
+                                    <table id="datatable-table" class="table text-center text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Pelatihan</th>
+                                                <th>Status</th>
+                                                <th>Opsi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($ujian as $u)
+                                                <tr>
+                                                    <td>{{ $u->nama }}</td>
+                                                    <td>{{ $u->pelatihan->nama_pelatihan }}</td>
+                                                    <td>{{ $u->is_active ? 'Aktif' : 'Tidak Aktif' }}</td>
+                                                    <td class="d-flex justify-content-center">
+                                                        @if ($u->jenis == 0)
+                                                            <a href="{{ url('/instruktur/ujian/' . $u->kode) }}"
+                                                                class="btn btn-sm"
+                                                                style="background-color: #5BBCFF;color:white">
+                                                                <span data-feather="eye"></span>
+                                                            </a>
+                                                        @endif
+                                                        @if ($u->is_active)
+                                                            <form
+                                                                action="{{ url('/instruktur/edit_ujian/' . $u->id . '?is_active=0') }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-warning btn-sm btn-uncheck">
+                                                                    <span data-feather="x"></span>
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            @if ($ujianActive >= 1)
+                                                                <form
+                                                                    action="{{ url('/instruktur/edit_ujian/' . $u->id . '?is_active=1') }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class="btn btn-warning btn-sm btn-activated">
+                                                                        <span data-feather="check"></span>
+                                                                    </button>
+                                                                </form>
+                                                            @else
+                                                                <form
+                                                                    action="{{ url('/instruktur/edit_ujian/' . $u->id . '?is_active=1') }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class="btn btn-warning btn-sm btn-check">
+                                                                        <span data-feather="check"></span>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+                                                        @endif
+                                                        @if ($u->jenis == 1)
+                                                            <a href="{{ url('/instruktur/ujian_essay/' . $u->kode) }}"
+                                                                class="btn btn-info btn-sm" style="background: #5BBCFF">
+                                                                <span data-feather="eye"></span>
+                                                            </a>
+                                                        @endif
+                                                        <form action="{{ url('/instruktur/ujian/' . $u->kode) }}"
+                                                            method="post" class="d-inline" id="formHapus">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm btn-hapus">
+                                                                <span data-feather="trash"></span>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @include('template.footer')
     </div>
-    @include('template.footer')
-</div>
-<!--  END CONTENT AREA  -->
+    <!--  END CONTENT AREA  -->
 
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             $(".btn-hapus").on("click", function(e) {
                 var t = $(this);
                 e.preventDefault(), swal({
@@ -163,28 +172,28 @@
                 }).then(function(e) {
                     e.value && t.parent("form").submit()
                 })
-            }),$(".btn-addData").on("click", function(e) {
+            }), $(".btn-addData").on("click", function(e) {
+                var t = $(this);
+                e.preventDefault(), swal({
+                    title: "Anda tidak bisa menambahkan Data",
+                    text: "Data ujian aktif sudah ada, mohon nonaktifkan terlebih dahulu!",
+                    type: "warning",
+
+                    padding: "2em"
+                })
+            })
+        }), $(".btn-activated").on("click", function(e) {
             var t = $(this);
             e.preventDefault(), swal({
-            title: "Anda tidak bisa menambahkan Data",
-            text: "Data ujian aktif sudah ada, mohon nonaktifkan terlebih dahulu!",
-            type: "warning",
+                title: "Anda tidak bisa mengaktifkan ujian ini",
+                text: "Data ujian aktif sudah ada, mohon nonaktifkan terlebih dahulu!",
+                type: "warning",
 
-            padding: "2em"
-            })
-            })
-            }),$(".btn-activated").on("click", function(e) {
-            var t = $(this);
-            e.preventDefault(), swal({
-            title: "Anda tidak bisa mengaktifkan ujian ini",
-            text: "Data ujian aktif sudah ada, mohon nonaktifkan terlebih dahulu!",
-            type: "warning",
-
-            padding: "2em"
+                padding: "2em"
             })
 
         });
-</script>
+    </script>
 
-{!! session('pesan') !!}
+    {!! session('pesan') !!}
 @endsection
