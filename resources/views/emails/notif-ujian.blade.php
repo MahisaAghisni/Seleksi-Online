@@ -11,17 +11,17 @@
 <body>
     <div style="padding: 10px;">
         <div
-            style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; font-size: 20px; color: #1C3FAA; font-weight: bold;">
-            CBT Malela
+            style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; font-size: 20px; color: #d31111; font-weight: bold;">
+            BLK Sumenep
         </div>
-        <small style="color: #000;">cbtmalela laravel-8 | by Abduloh</small>
+        <small style="color: #000;">Seleksi Online</small>
         <p style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; color: #000;">
-            Halo para siswa, {{ $details['nama_guru'] }} telah memposting Ujian baru :
+            Halo para peserta, {{ $details['nama_instruktur'] }} telah memposting Ujian baru :
         </p>
         <table style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; color: #000;">
             <tr>
                 <td>Ujian</td>
-                <td> : {{ $details['nama_ujian'] }}</td>
+                <td> : {{ $details['nama'] }}</td>
             </tr>
             <tr>
                 <td>Waktu Ujian</td>
@@ -32,7 +32,7 @@
             silahkan login untuk mengerjakan ujian
         </p>
         <a href="{{ url('/') }}"
-            style="display: inline-block; width: 100px; height: 30px; background: #1C3FAA; color: #fff; text-decoration: none; border-radius: 5px; text-align: center; line-height: 30px; font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif;">
+            style="display: inline-block; width: 100px; height: 30px; background: #d31111; color: #fff; text-decoration: none; border-radius: 5px; text-align: center; line-height: 30px; font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif;">
             Login
         </a>
     </div>

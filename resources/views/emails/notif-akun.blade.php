@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Akun CBT MALELA</title>
+    <title>BLK Sumenep</title>
 </head>
+
 <body>
     <div style="padding: 10px;">
-        <div style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; font-size: 20px; color: #1C3FAA; font-weight: bold;">
-        CBT Malela
+        <div
+            style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; font-size: 20px; color: #d31111; font-weight: bold;">
+            BLK Sumenep
         </div>
-        <small style="color: #000;">cbtmalela laravel-8 | by Abduloh</small>
+        <small style="color: #000;">Seleksi Online</small>
         <p style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; color: #000;">
-            Halo {{ $details['nama'] }}, Admin telah menambahkan kamu kedalam aplikasi CBT MALELA, berikut merupakan informasi akunmu :
+            Halo {{ $details['nama'] }}, Admin telah menambahkan kamu kedalam aplikasi Seleksi Online, berikut merupakan
+            informasi akunmu :
         </p>
         <table style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; color: #000;">
             <tr>
@@ -28,9 +32,11 @@
         <p style="font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif; color: #000;">
             silahkan login untuk masuk kedalam aplikasi menggunakan informasi akun di atas.
         </p>
-        <a href="{{ url('/') }}" style="display: inline-block; width: 100px; height: 30px; background: #1C3FAA; color: #fff; text-decoration: none; border-radius: 5px; text-align: center; line-height: 30px; font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif;">
+        <a href="{{ url('/') }}"
+            style="display: inline-block; width: 100px; height: 30px; background: #d31111; color: #fff; text-decoration: none; border-radius: 5px; text-align: center; line-height: 30px; font-family: `Segoe UI`, Tahoma, Geneva, Verdana, sans-serif;">
             Login
         </a>
-    </div> 
+    </div>
 </body>
+
 </html>
