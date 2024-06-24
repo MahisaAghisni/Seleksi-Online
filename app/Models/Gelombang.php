@@ -35,4 +35,14 @@ class Gelombang extends Model
     {
         return $this->hasMany(Ujian::class, 'gelombang_id', 'id');
     }
+
+    public function pesertas()
+    {
+        return $this->hasMany(Peserta::class, 'idGelombang');
+    }
+
+    public static function getActiveGelombang()
+    {
+        return self::where('is_active', 'aktif')->get();
+    }
 }

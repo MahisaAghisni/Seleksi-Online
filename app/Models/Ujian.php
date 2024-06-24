@@ -35,13 +35,19 @@ class Ujian extends Model
         return $this->hasMany(DetailUjian::class, 'kode', 'kode');
     }
 
-    public function detailGelombang(){
+    public function detailGelombang()
+    {
         return $this->hasMany(DetailGelombang::class, 'idUjian', 'id');
     }
 
-    public function gelombang(){
+    public function gelombang()
+    {
         return $this->belongsTo(Gelombang::class, 'gelombang_id', 'id');
-    
+    }
+
+    public function seleksi()
+    {
+        return $this->hasMany(Seleksi::class, 'idUjian', 'id');
     }
 
     // DEFAULT KEY DI UBAH JADI KODE BUKAN ID LAGI
