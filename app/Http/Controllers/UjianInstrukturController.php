@@ -13,6 +13,7 @@ use App\Models\Instrukturpelatihan;
 use App\Models\DetailGelombang;
 use App\Models\Peserta;
 use App\Models\PgPeserta;
+use App\Models\Seleksi;
 use App\Models\Ujian;
 use App\Models\WaktuUjian;
 use Illuminate\Http\Request;
@@ -48,8 +49,8 @@ class UjianInstrukturController extends Controller
         return view('instruktur.ujian.create', [
             'title' => 'Tambah Ujian',
             'plugin' => '
-                <link href="' . url("/assets/cbt-malela") . '/plugins/file-upload/file-upload-with-preview.min.css" rel="stylesheet" type="text/css" />
-                <script src="' . url("/assets/cbt-malela") . '/plugins/file-upload/file-upload-with-preview.min.js"></script>
+                <link href="' . url("/assets/template") . '/plugins/file-upload/file-upload-with-preview.min.css" rel="stylesheet" type="text/css" />
+                <script src="' . url("/assets/template") . '/plugins/file-upload/file-upload-with-preview.min.js"></script>
                 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
                 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
             ',
@@ -141,7 +142,7 @@ class UjianInstrukturController extends Controller
             'idPelatihan' => $request->pelatihan,
             'idUjian' => $createUjian->id
         ];
-        DetailGelombang::insert($data);
+        Seleksi::insert($data);
 
         return redirect('/instruktur/ujian')->with('pesan', "
             <script>
@@ -220,7 +221,7 @@ class UjianInstrukturController extends Controller
                 'idPelatihan' => $request->pelatihan,
                 'idUjian' => $createUjian
             ];
-            DetailGelombang::insert($data);
+            Seleksi::insert($data);
 
             // Lanjutkan dengan pengiriman email dan operasi lainnya
         } else {

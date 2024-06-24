@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ForgotPassword;
 use App\Models\Admin;
+use App\Models\Gelombang;
 use App\Models\Token;
 use Illuminate\Support\Str;
 use App\Models\Instruktur;
@@ -30,17 +31,17 @@ class AuthController extends Controller
         ]);
     }
 
-    public function index_blk()
-    {
-        if (session('admin') != null) {
-            return redirect('/admin');
-        }
+    // public function index_blk()
+    // {
+    //     if (session('admin') != null) {
+    //         return redirect('/admin');
+    //     }
 
-        return view('auth.login_blk', [
-            "title" => "Login Form",
-            "admin" => Admin::all()
-        ]);
-    }
+    //     return view('auth.login_blk', [
+    //         "title" => "Login Form",
+    //         "admin" => Admin::all()
+    //     ]);
+    // }
 
     public function login(Request $request)
     {
@@ -119,7 +120,12 @@ class AuthController extends Controller
             }
         }
 
-        $peserta = Peserta::firstWhere('ktp', $request->input('email'));
+        $gelombang_aktif = Gelombang::getActiveGelombang()->pluck('id')->toArray();
+
+        $peserta_list = Peserta::where('idGelombang', $gelombang_aktif)->get();
+
+        $peserta = $peserta_list->firstWhere('ktp', $request->input('email'));
+
         if ($peserta) {
             if ($peserta->is_active == 0) {
                 return redirect('/')->with('pesan', "
