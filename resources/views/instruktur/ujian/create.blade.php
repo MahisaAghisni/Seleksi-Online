@@ -214,7 +214,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="">pelatihan</label>
+                                    <label for="">Pelatihan</label>
                                     <select class="form-control" name="pelatihan" id="pelatihan" required>
                                         <option value="">Pilih</option>
                                         @foreach ($instruktur_pelatihan as $ip)
@@ -232,8 +232,8 @@
                                         <option value="">Pilih</option>
                                         @foreach ($gelombang as $ip)
                                             <option value="{{ $ip->id }}">
-                                                Gelombang {{ $ip->gelombang }} ({{ $ip->tgl_seleksi_awal }} -
-                                                {{ $ip->tgl_seleksi_akhir }})
+                                                Gelombang
+                                                {{ $ip->tahun }}-{{ $ip->gelombang }}-{{ $ip->anggaran->nama_anggaran ?? '-' }}-{{ $ip->jenisPelatihan->pelatihan ?? '-' }}
                                             </option>
                                         @endforeach
                                     </select>

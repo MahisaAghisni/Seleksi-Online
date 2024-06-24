@@ -258,7 +258,6 @@
                                                             <th>Salah</th>
                                                             <th>Tidak Dijawab</th>
                                                             <th>Nilai</th>
-                                                            {{-- <th>opsi</th> --}}
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -299,11 +298,6 @@
                                                                         @endphp
                                                                         {{ round($nilai) }} / 100
                                                                     </td>
-                                                                    {{-- <td>
-                                                                        <a href="{{ url('/instruktur/ujian/' . $ujian->kode . '/' . $p->peserta->id) }}"
-                                                                            class="btn btn-info btn-sm"><span
-                                                                                data-feather="eye"></span></a>
-                                                                    </td> --}}
                                                                 </tr>
                                                             @endif
                                                         @endforeach
