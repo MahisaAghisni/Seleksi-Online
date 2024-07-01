@@ -121,13 +121,21 @@ class AdminController extends Controller
         $validatedData = $request->validate($rules);
 
         if ($request->file('avatar')) {
-            if ($request->gambar_lama) {
-                if ($request->gambar_lama != 'default.png') {
-                    Storage::delete('assets/user-profile/' . $request->gambar_lama);
+            if ($request->gambar_lama && $request->gambar_lama != 'default.png') {
+                $oldAvatarPath = public_path('assets/user-profile/' . $request->gambar_lama);
+                if (file_exists($oldAvatarPath)) {
+                    unlink($oldAvatarPath);
                 }
             }
-            $validatedData['avatar'] = str_replace('assets/user-profile/', '', $request->file('avatar')->store('assets/user-profile'));
+            $avatarFile = $request->file('avatar');
+            $avatarFileName = time() . '_' . $avatarFile->getClientOriginalName();
+            $avatarFile->move(
+                public_path('assets/user-profile'),
+                $avatarFileName
+            );
+            $validatedData['avatar'] = $avatarFileName;
         }
+
         Admin::where('id', $admin->id)
             ->update($validatedData);
 
@@ -524,7 +532,7 @@ class AdminController extends Controller
             'admin' => Admin::firstWhere('id', session()->get('id')),
             'gelombang' => $datas,
             'anggaran' => Anggaran::all(),
-            'dataGelombang' => gelombang::all()
+            'dataGelombang' => Gelombang::all()
         ]);
     }
 
