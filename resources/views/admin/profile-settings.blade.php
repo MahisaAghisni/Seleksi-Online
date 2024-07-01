@@ -36,7 +36,7 @@
                         </div>
                     </div>
 
-                    <div class="education layout-spacing ">
+                    {{-- <div class="education layout-spacing ">
                         <div class="widget-content widget-content-area">
                             <h3 class="">Notif Email Settings</h3>
                             <form action="{{ url('/admin/smtp_email/' . $email_settings->id) }}" method="post">
@@ -79,7 +79,7 @@
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
 
@@ -93,8 +93,8 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="">Nama</label>
-                                    <input type="text" name="nama_admin" id="nama_admin"
-                                        value="{{ $admin->nama_admin }}" class="form-control" required>
+                                    <input type="text" name="nama_admin" id="nama_admin" value="{{ $admin->nama_admin }}"
+                                        class="form-control" required>
                                     @error('nama_admin')
                                         <div class="text-danger">
                                             {{ $message }}
