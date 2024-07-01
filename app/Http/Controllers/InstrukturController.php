@@ -56,10 +56,18 @@ class InstrukturController extends Controller
         if ($request->file('avatar')) {
             if ($request->gambar_lama) {
                 if ($request->gambar_lama != 'default.png') {
-                    Storage::delete('assets/user-profile/' . $request->gambar_lama);
+                    $oldAvatarPath = public_path('assets/user-profile/' . $request->gambar_lama);
+                    if (file_exists($oldAvatarPath)) {
+                        unlink($oldAvatarPath);
+                    }
                 }
             }
-            $validatedData['avatar'] = str_replace('assets/user-profile/', '', $request->file('avatar')->store('assets/user-profile'));
+
+            $avatarFile = $request->file('avatar');
+            $avatarFileName = time() . '_' . $avatarFile->getClientOriginalName();
+            $avatarFile->move(public_path('assets/user-profile'), $avatarFileName);
+
+            $validatedData['avatar'] = $avatarFileName;
         }
 
         Instruktur::where('id', $instruktur->id)->update($validatedData);
